@@ -1,0 +1,11 @@
+2026-05-06 11:44:26,450 INFO multi_agent_research_lab.observability.tracing - Started trace span: multi_agent_workflow | attributes: {'query': 'What is GraphRAG and how does it compare to Flat RAG?'}
+2026-05-06 11:44:26,467 INFO multi_agent_research_lab.agents.supervisor - Supervisor decided to route to: researcher
+2026-05-06 11:44:34,519 INFO httpx - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-06 11:44:34,529 INFO multi_agent_research_lab.agents.supervisor - Supervisor decided to route to: analyst
+2026-05-06 11:44:43,031 INFO httpx - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-06 11:44:43,203 INFO multi_agent_research_lab.agents.supervisor - Supervisor decided to route to: writer
+2026-05-06 11:44:55,566 INFO httpx - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-06 11:44:55,567 INFO multi_agent_research_lab.agents.supervisor - Supervisor decided to route to: critic
+2026-05-06 11:45:02,121 INFO httpx - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-06 11:45:02,123 INFO multi_agent_research_lab.agents.supervisor - Supervisor decided to route to: done
+2026-05-06 11:45:02,123 INFO multi_agent_research_lab.observability.tracing - Completed trace span: multi_agent_workflow | duration: 35.6731s

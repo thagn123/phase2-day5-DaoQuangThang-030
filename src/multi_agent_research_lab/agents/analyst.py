@@ -1,9 +1,13 @@
 """Analyst agent skeleton."""
 
+import logging
+
 from multi_agent_research_lab.agents.base import BaseAgent
 from multi_agent_research_lab.core.schemas import AgentName, AgentResult
 from multi_agent_research_lab.core.state import ResearchState
 from multi_agent_research_lab.services.llm_client import LLMClient
+
+logger = logging.getLogger(__name__)
 
 
 class AnalystAgent(BaseAgent):
@@ -16,6 +20,7 @@ class AnalystAgent(BaseAgent):
 
     def run(self, state: ResearchState) -> ResearchState:
         """Populate `state.analysis_notes`."""
+        logger.info("Analyst starting to process research notes.")
 
         prompt = (
             f"Analyze the following research notes. Extract key claims, compare viewpoints, "
@@ -34,6 +39,11 @@ class AnalystAgent(BaseAgent):
         )
 
         state.analysis_notes = response.content
+        logger.info(
+            f"Analyst completed analysis (length: {len(state.analysis_notes)} chars):\n"
+            f"{state.analysis_notes[:200]}..."
+        )
+
         state.agent_results.append(
             AgentResult(
                 agent=AgentName(self.name),

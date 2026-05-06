@@ -4,10 +4,13 @@ This file intentionally avoids binding to one provider. Students can plug in Lan
 Langfuse, OpenTelemetry, or simple JSON traces.
 """
 
+import logging
 from collections.abc import Iterator
 from contextlib import contextmanager
 from time import perf_counter
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 @contextmanager
@@ -15,7 +18,9 @@ def trace_span(name: str, attributes: dict[str, Any] | None = None) -> Iterator[
     """Minimal span context used by the skeleton."""
     started = perf_counter()
     span: dict[str, Any] = {"name": name, "attributes": attributes or {}, "duration_seconds": None}
+    logger.info(f"Started trace span: {name} | attributes: {span['attributes']}")
     try:
         yield span
     finally:
         span["duration_seconds"] = perf_counter() - started
+        logger.info(f"Completed trace span: {name} | duration: {span['duration_seconds']:.4f}s")

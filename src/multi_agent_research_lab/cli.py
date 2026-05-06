@@ -64,10 +64,13 @@ def multi_agent(
     """Run the multi-agent workflow skeleton."""
 
     _init()
+    from multi_agent_research_lab.observability.tracing import trace_span
+
     state = ResearchState(request=ResearchQuery(query=query))
     workflow = MultiAgentWorkflow()
     try:
-        result = workflow.run(state)
+        with trace_span("multi_agent_workflow", {"query": query}):
+            result = workflow.run(state)
     except StudentTodoError as exc:
         console.print(Panel.fit(str(exc), title="Expected TODO", style="yellow"))
         raise typer.Exit(code=2) from exc

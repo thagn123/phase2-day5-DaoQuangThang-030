@@ -1,8 +1,12 @@
 """Supervisor / router skeleton."""
 
+import logging
+
 from multi_agent_research_lab.agents.base import BaseAgent
 from multi_agent_research_lab.core.schemas import AgentName, AgentResult
 from multi_agent_research_lab.core.state import ResearchState
+
+logger = logging.getLogger(__name__)
 
 
 class SupervisorAgent(BaseAgent):
@@ -15,6 +19,7 @@ class SupervisorAgent(BaseAgent):
 
         # Enforce max iterations
         if state.iteration >= 5:
+            logger.warning("Max iterations reached in Supervisor")
             state.errors.append("Max iterations reached in Supervisor")
             state.route_history.append("done")
             return state
@@ -29,6 +34,8 @@ class SupervisorAgent(BaseAgent):
         else:
             # We can run critic here to validate final answer.
             next_agent = "critic" if "critic" not in state.route_history else "done"
+
+        logger.info(f"Supervisor decided to route to: {next_agent}")
 
         state.record_route(next_agent)
         state.agent_results.append(

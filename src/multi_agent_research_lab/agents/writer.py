@@ -1,9 +1,13 @@
 """Writer agent skeleton."""
 
+import logging
+
 from multi_agent_research_lab.agents.base import BaseAgent
 from multi_agent_research_lab.core.schemas import AgentName, AgentResult
 from multi_agent_research_lab.core.state import ResearchState
 from multi_agent_research_lab.services.llm_client import LLMClient
+
+logger = logging.getLogger(__name__)
 
 
 class WriterAgent(BaseAgent):
@@ -16,6 +20,7 @@ class WriterAgent(BaseAgent):
 
     def run(self, state: ResearchState) -> ResearchState:
         """Populate `state.final_answer`."""
+        logger.info("Writer starting to synthesize final answer from notes.")
 
         prompt = (
             "Write a comprehensive final answer for the user based on the "
@@ -37,6 +42,11 @@ class WriterAgent(BaseAgent):
         )
 
         state.final_answer = response.content
+        logger.info(
+            f"Writer completed final answer (length: {len(state.final_answer)} chars):\n"
+            f"{state.final_answer[:200]}..."
+        )
+
         state.agent_results.append(
             AgentResult(
                 agent=AgentName(self.name),

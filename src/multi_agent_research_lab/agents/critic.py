@@ -1,9 +1,13 @@
 """Optional critic agent skeleton for bonus work."""
 
+import logging
+
 from multi_agent_research_lab.agents.base import BaseAgent
 from multi_agent_research_lab.core.schemas import AgentName, AgentResult
 from multi_agent_research_lab.core.state import ResearchState
 from multi_agent_research_lab.services.llm_client import LLMClient
+
+logger = logging.getLogger(__name__)
 
 
 class CriticAgent(BaseAgent):
@@ -16,6 +20,7 @@ class CriticAgent(BaseAgent):
 
     def run(self, state: ResearchState) -> ResearchState:
         """Validate final answer and append findings."""
+        logger.info("Critic starting to validate the final answer.")
 
         prompt = (
             f"Critique the following answer. Check for hallucinations, citation coverage, "
@@ -36,6 +41,11 @@ class CriticAgent(BaseAgent):
         # We append the critique to the agent results.
         # If we were optimizing, we would loop back to Writer.
         # But we'll just store the critique in the state.
+        logger.info(
+            f"Critic completed feedback (length: {len(response.content)} chars):\n"
+            f"{response.content[:200]}..."
+        )
+
         state.agent_results.append(
             AgentResult(
                 agent=AgentName(self.name),
